@@ -381,6 +381,16 @@ def should_rerank(query: str, dense_results: list, cross_encoder) -> bool:
     # If improvement <0.02 (2%), skip reranking
     return improvement > 0.02
 ```
+## When we use re-ranker why we need to evaluate it with NDCG, as re-ranker should give us the correct order of the retrived document ?
+### ANS: 
+> "A reranker is a trained ML model, not a guaranteed-correct algorithm — it will always produce some ranking, but that ranking isn't necessarily the right one. It can get things wrong due to domain shift, ambiguous queries, or limitations in its training data. And critically, these errors are silent — there's no crash or exception, just a suboptimal order that looks fine on the surface.
+
+NDCG is how we quantify whether the ranking actually matches ground-truth relevance. Without it, we're assuming the reranker is doing a good job — we can't prove it, catch regressions when we change models or fine-tune, or compare one reranker against another.
+
+It's the same reason we use accuracy or F1 for a classifier — the model will always predict something, but that doesn't mean the prediction is correct. NDCG plays that same role for ranking: it measures how good the output is, not just that an output exists."
+
+
+
 
 ---
 
